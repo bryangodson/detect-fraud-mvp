@@ -1,0 +1,1 @@
+{"amount":1200,"decision":"BLOCK","reasons":["New account making a large transaction","Transaction from a new device and medium-large amount","Transaction is from a high risk country"],"score":0.96,"timestamp":"2025-08-10T08:38:16.11987695Z","transaction_id":"tx-1","user_id":"user-1"}
