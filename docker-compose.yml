@@ -1,0 +1,37 @@
+version: "3.8"
+services:
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: frauddb
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  model:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.python-service
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+
+  api:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.go-service
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@postgres:5432/frauddb?sslmode=disable
+      MODEL_SERVER_URL: http://model:8000/score
+    ports:
+      - "8080:8080"
+    depends_on:
+      - model
+      - postgres
+
+volumes:
+  pgdata:
